@@ -128,4 +128,4 @@
 
 아래 이미지는 위 와이어프레임을 바탕으로 구현된 실제 React 자동차 관리 화면입니다.
 
-![Car CRUD Admin 실제 구현 화면](images/car-admin-preview.png)
+![Car CRUD Admin 실제 구현 화면](../images/car-admin-preview.png)
