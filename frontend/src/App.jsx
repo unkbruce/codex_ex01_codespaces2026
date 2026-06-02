@@ -122,16 +122,11 @@ function App() {
   return (
     <main className="min-h-screen bg-slate-100 px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
       <section className="mx-auto w-full max-w-6xl">
-        <header className="mb-6 flex flex-col gap-2 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold text-blue-700">Car Admin</p>
-            <h1 className="mt-1 text-3xl font-bold tracking-normal text-slate-950 sm:text-4xl">
-              자동차 관리
-            </h1>
-          </div>
-          <p className="max-w-2xl text-sm leading-6 text-slate-600 sm:text-right">
-            Express REST API와 React 화면을 연결해 자동차 정보를 조회, 추가, 수정, 삭제합니다.
-          </p>
+        <header className="mb-6 sm:mb-8">
+          <p className="text-sm font-semibold text-blue-700">Car Admin</p>
+          <h1 className="mt-1 text-3xl font-bold tracking-normal text-slate-950 sm:text-4xl">
+            자동차 관리
+          </h1>
         </header>
 
         <form
