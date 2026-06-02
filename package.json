@@ -1,0 +1,15 @@
+{
+  "name": "codex_ex01_codespaces2026",
+  "version": "1.0.0",
+  "description": "Express REST API example",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
