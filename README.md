@@ -26,7 +26,7 @@ Express REST API와 React 화면을 연결해 자동차 정보를 조회, 추가
 
 ## 프로젝트 문서
 
-- [요구사항 문서](docs/requirements.md): 프로젝트에서 구현할 기능과 조건을 정리한 문서입니다.
+- [요구사항 정의서](docs/requirements.md): 프로젝트에서 구현할 기능과 조건을 정리한 문서입니다.
 - [와이어프레임](docs/wireframe.md): 화면 구성과 사용자 흐름을 간단히 정리한 문서입니다.
 
 ## 주요 기능
@@ -69,6 +69,11 @@ Express REST API와 React 화면을 연결해 자동차 정보를 조회, 추가
 │       ├── App.jsx           # 자동차 관리 CRUD 화면
 │       ├── App.css           # Tailwind CSS import 및 기본 스타일
 │       └── main.jsx
+├── docs
+│   ├── requirements.md       # 요구사항 정의서
+│   ├── wireframe.md          # 화면 와이어프레임 문서
+│   └── images
+│       └── car-admin-preview.png
 └── .github
     └── workflows
         └── ci.yml            # GitHub Actions CI 워크플로우
