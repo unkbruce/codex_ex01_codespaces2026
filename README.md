@@ -1,177 +1,127 @@
-# Express 자동차 REST API + React CRUD 실습
+# Car CRUD Admin
 
-## 프로젝트 소개
+Express REST API와 React 화면을 연결해 자동차 정보를 조회, 추가, 수정, 삭제할 수 있는 풀스택 CRUD 실습 프로젝트입니다.
 
-이 프로젝트는 Codespaces + Codex 환경에서 Express 백엔드와 Vite 기반 React 프론트엔드를 함께 실습하기 위한 자동차 CRUD 예제입니다.
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=000000)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=ffffff)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=ffffff)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=000000)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=ffffff)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=ffffff)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=000000)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=ffffff)
 
-백엔드는 데이터베이스를 사용하지 않고 메모리 배열 `carList`에 자동차 데이터를 저장합니다. 프론트엔드는 Vite 프록시를 통해 Express API에 요청하고, 자동차 목록 조회, 추가, 수정, 삭제 기능을 화면에서 실행합니다. React 화면 스타일은 Tailwind CSS를 적용해 관리자 화면 형태로 구성했습니다.
+## 배포 주소
 
-## Codespaces 실행 환경
+| 구분 | 주소 |
+| --- | --- |
+| Frontend | [https://car-crud-frontend.onrender.com](https://car-crud-frontend.onrender.com) |
+| Backend API | [https://car-crud-api-ue60.onrender.com](https://car-crud-api-ue60.onrender.com) |
+| Health Check | [https://car-crud-api-ue60.onrender.com/health](https://car-crud-api-ue60.onrender.com/health) |
+| Cars API | [https://car-crud-api-ue60.onrender.com/cars](https://car-crud-api-ue60.onrender.com/cars) |
 
-이 프로젝트는 Node.js 20 기반 Codespaces Dev Container에서 실행하도록 설정되어 있습니다.
+## 화면 미리보기
 
-`.devcontainer/devcontainer.json`은 `mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm` 이미지를 사용합니다. 이 이미지에는 Node.js와 npm이 포함되어 있어 루트 Express 서버와 `frontend`의 Vite React 앱을 실행할 수 있습니다.
+![Car CRUD Admin 화면 미리보기](docs/images/car-admin-preview.png)
 
-Dev Container 설정을 처음 추가했거나 수정한 뒤에는 Codespaces에서 반드시 컨테이너를 다시 빌드해야 합니다.
+## 프로젝트 문서
 
-1. VS Code Command Palette를 엽니다.
-2. `Codespaces: Rebuild Container` 또는 `Dev Containers: Rebuild Container`를 실행합니다.
-3. Rebuild가 끝난 뒤 새 터미널에서 `node -v`와 `npm -v`를 확인합니다.
+- [요구사항 문서](docs/requirements.md): 프로젝트에서 구현할 기능과 조건을 정리한 문서입니다.
+- [와이어프레임](docs/wireframe.md): 화면 구성과 사용자 흐름을 간단히 정리한 문서입니다.
 
+## 주요 기능
 
-## 폴더 구조
+- 자동차 목록 조회
+- 자동차 추가
+- 자동차 수정
+- 자동차 삭제
+- React 화면과 Express API 연동
+- Tailwind CSS 기반 관리자 UI
+- Render를 이용한 백엔드/프론트엔드 배포
+- GitHub Actions를 이용한 CI 구성
+
+## 기술 스택
+
+| 영역 | 기술 |
+| --- | --- |
+| Frontend | React, Vite, Tailwind CSS |
+| Backend | Node.js, Express |
+| Data | 메모리 배열 |
+| Deploy | Render |
+| CI | GitHub Actions |
+| Version Control | Git, GitHub |
+
+## 프로젝트 구조
 
 ```text
 .
-├── package.json              # Express 서버 의존성 및 실행 스크립트
+├── package.json              # Express 백엔드 실행 스크립트와 의존성
 ├── package-lock.json
-├── README.md
-├── .github
-│   └── workflows
-│       └── ci.yml             # GitHub Actions CI 워크플로우
+├── README.md                 # 프로젝트 설명 문서
 ├── src
 │   └── server.js             # Express 서버와 자동차 CRUD REST API
-└── frontend
-    ├── index.html
-    ├── package.json          # React/Vite 의존성 및 실행 스크립트
-    ├── vite.config.js        # /api 요청을 Express 서버로 전달하는 프록시 설정
-    └── src
-        ├── App.jsx           # 자동차 CRUD 화면
-        ├── App.css           # Tailwind CSS import 및 기본 스타일
-        └── main.jsx
+├── frontend
+│   ├── index.html
+│   ├── package.json          # React/Vite 실행 스크립트와 의존성
+│   ├── package-lock.json
+│   ├── vite.config.js        # 개발 환경에서 /api 요청을 백엔드로 전달하는 프록시 설정
+│   └── src
+│       ├── App.jsx           # 자동차 관리 CRUD 화면
+│       ├── App.css           # Tailwind CSS import 및 기본 스타일
+│       └── main.jsx
+└── .github
+    └── workflows
+        └── ci.yml            # GitHub Actions CI 워크플로우
 ```
 
-## 백엔드 실행 방법
+## API 명세
 
-루트 폴더에서 의존성을 설치하고 Express 서버를 실행합니다.
+| Method | Endpoint | 설명 |
+| --- | --- | --- |
+| GET | `/health` | 서버 상태를 확인합니다. |
+| GET | `/cars` | 자동차 목록 전체를 조회합니다. |
+| GET | `/cars/:id` | 특정 ID의 자동차 정보를 조회합니다. |
+| POST | `/cars` | 새 자동차 정보를 추가합니다. |
+| PUT | `/cars/:id` | 특정 ID의 자동차 정보를 수정합니다. |
+| DELETE | `/cars/:id` | 특정 ID의 자동차 정보를 삭제합니다. |
 
-Dev Container가 새로 만들어질 때 `postCreateCommand`가 루트와 `frontend` 의존성을 설치합니다. 이미 설치되어 있다면 `npm install`은 생략할 수 있습니다.
+자동차 데이터는 데이터베이스가 아니라 Express 서버의 메모리 배열에 저장됩니다. 서버를 재시작하면 데이터는 초기값으로 돌아갑니다.
+
+## 로컬 실행 방법
+
+백엔드와 프론트엔드는 각각 다른 터미널에서 실행합니다.
+
+### 1. 백엔드 실행
+
+프로젝트 루트 폴더에서 의존성을 설치하고 Express 서버를 실행합니다.
 
 ```bash
 npm install
 npm start
 ```
 
-서버는 기본적으로 `http://localhost:3000`에서 실행됩니다.
+백엔드 서버는 기본적으로 `http://localhost:3000`에서 실행됩니다.
 
-다른 포트를 사용하려면 `PORT` 환경변수를 지정할 수 있습니다.
-
-```bash
-PORT=4000 npm start
-```
-
-## Tailwind CSS 적용 내용
-
-프론트엔드에는 Tailwind CSS가 적용되어 있습니다.
-
-- `frontend/package.json`에 `tailwindcss`와 `@tailwindcss/vite` 의존성을 추가했습니다.
-- `frontend/vite.config.js`에서 Tailwind Vite 플러그인을 React 플러그인과 함께 사용합니다.
-- `frontend/src/App.css`는 `@import "tailwindcss";`를 중심으로 정리하고, 화면 스타일은 `frontend/src/App.jsx`의 Tailwind 유틸리티 클래스로 적용합니다.
-
-## 프론트엔드 실행 방법
-
-새 터미널을 열고 `frontend` 폴더에서 의존성을 설치한 뒤 Vite 개발 서버를 실행합니다.
-
-Dev Container 생성 후 의존성이 이미 설치되어 있다면 `npm install`은 생략할 수 있습니다.
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Vite 개발 서버는 기본적으로 `http://localhost:5173`에서 실행됩니다.
-
-## 백엔드와 프론트엔드 동시 실행 방법
-
-터미널 2개를 열어 백엔드와 프론트엔드를 동시에 실행합니다.
-
-첫 번째 터미널에서는 루트 폴더에서 Express 서버를 실행합니다.
-
-```bash
-npm start
-```
-
-두 번째 터미널에서는 `frontend` 폴더에서 Vite 개발 서버를 실행합니다.
-
-```bash
-cd frontend
-npm run dev
-```
-
-브라우저에서는 `http://localhost:5173`으로 접속합니다. React는 계속 `/api/cars`로 요청하고, Vite 프록시가 Express 서버의 `/cars`로 전달합니다.
-
-## API 목록
-
-자동차 데이터 형식은 다음 필드를 사용합니다.
-
-```json
-{
-  "_id": 1,
-  "name": "Sonata",
-  "company": "Hyundai",
-  "year": 2023,
-  "price": 32000000
-}
-```
-
-### `GET /health`
-
-Express 서버 상태를 확인합니다.
+확인 명령어:
 
 ```bash
 curl http://localhost:3000/health
-```
-
-### `GET /cars`
-
-자동차 목록을 조회합니다.
-
-```bash
 curl http://localhost:3000/cars
 ```
 
-### `GET /cars/:id`
+### 2. 프론트엔드 실행
 
-특정 자동차를 조회합니다.
-
-```bash
-curl http://localhost:3000/cars/1
-```
-
-### `POST /cars`
-
-자동차를 추가합니다.
+새 터미널을 열고 `frontend` 폴더에서 Vite 개발 서버를 실행합니다.
 
 ```bash
-curl -X POST http://localhost:3000/cars \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Avante","company":"Hyundai","year":2024,"price":25000000}'
+cd frontend
+npm install
+npm run dev
 ```
 
-### `PUT /cars/:id`
+프론트엔드는 기본적으로 `http://localhost:5173`에서 실행됩니다.
 
-자동차 정보를 수정합니다.
-
-```bash
-curl -X PUT http://localhost:3000/cars/1 \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Sonata Hybrid","company":"Hyundai","year":2024,"price":37000000}'
-```
-
-### `DELETE /cars/:id`
-
-자동차를 삭제합니다.
-
-```bash
-curl -X DELETE http://localhost:3000/cars/1
-```
-
-## 프록시 구조 설명
-
-Express 서버의 실제 API 경로는 `/cars`입니다. React 코드에서는 Vite 개발 서버 기준으로 `/api/cars`에 요청합니다.
-
-`frontend/vite.config.js`의 proxy rewrite 설정이 `/api` 접두사를 제거해서 Express 서버로 전달합니다.
+개발 환경에서는 React가 `/api/cars`로 요청하고, Vite proxy가 이 요청을 Express 서버의 `/cars`로 전달합니다.
 
 ```text
 React fetch('/api/cars')
@@ -179,139 +129,61 @@ React fetch('/api/cars')
   -> http://localhost:3000/cars
 ```
 
-예를 들어 React에서 `DELETE /api/cars/1`을 호출하면 Express 서버에는 `DELETE /cars/1`로 전달됩니다.
+## 프론트엔드 빌드
 
-## 화면 구성 설명
-
-React 화면은 Tailwind CSS로 다음과 같이 구성되어 있습니다.
-
-- 상단 헤더: 자동차 관리 화면의 제목과 설명을 표시합니다.
-- 자동차 입력 카드: 이름, 제조사, 연식, 가격을 입력하고 자동차를 추가하거나 수정합니다.
-- 수정 모드 표시: 목록의 수정 버튼을 누르면 폼 제목과 배지가 수정 모드로 바뀝니다.
-- 자동차 목록 테이블: 자동차 데이터를 표 형태로 보여주며 수정 버튼과 삭제 버튼을 구분된 색상으로 제공합니다.
-- 반응형 처리: 작은 화면에서는 입력 폼이 세로로 배치되고, 테이블은 가로 스크롤로 확인할 수 있습니다.
-
-## CRUD 사용 흐름
-
-1. 백엔드 서버를 `npm start`로 실행합니다.
-2. 프론트엔드 서버를 `cd frontend && npm run dev`로 실행합니다.
-3. 브라우저에서 `http://localhost:5173`을 엽니다.
-4. 화면이 처음 열리면 React가 `GET /api/cars`로 자동차 목록을 불러옵니다.
-5. 입력 폼에 자동차 이름, 제조사, 연식, 가격을 입력하고 자동차를 추가합니다.
-6. 목록의 `수정` 버튼을 누르면 선택한 자동차 정보가 폼에 채워지고, `수정 저장`으로 변경 내용을 저장합니다.
-7. 목록의 `삭제` 버튼을 누르면 선택한 자동차가 메모리 배열에서 삭제됩니다.
-
-## 테스트 방법
-
-백엔드는 `curl`로 각 API를 직접 확인할 수 있습니다.
-
-```bash
-curl http://localhost:3000/health
-curl http://localhost:3000/cars
-```
-
-프론트엔드는 브라우저에서 `http://localhost:5173`에 접속한 뒤 추가, 수정, 삭제 버튼을 눌러 동작을 확인합니다.
-
-메모리 배열을 사용하므로 Express 서버를 재시작하면 자동차 데이터는 초기값으로 돌아갑니다.
-
-## Render 배포 준비
-
-이 프로젝트는 백엔드와 프론트엔드를 분리해서 배포하는 구조로 준비합니다.
-
-- Backend: Render Web Service에 Express REST API를 배포합니다.
-- Frontend: Render Static Site로 Vite 빌드 결과물을 배포할 수 있으며, 같은 구조로 Firebase Hosting 또는 Vercel에도 정적 배포할 수 있습니다.
-- 실제 자동 배포는 GitHub Actions에서 Render API Key를 직접 사용하지 않고, Render의 GitHub 저장소 연동과 Auto Deploy 기능을 사용합니다.
-
-### Backend: Render Web Service
-
-Render Dashboard에서 `New +` -> `Web Service`를 선택하고 GitHub 저장소를 연결합니다.
-
-| 항목 | 설정값 |
-| --- | --- |
-| Runtime | Node |
-| Branch | `main` |
-| Root Directory | 비워둠 또는 `.` |
-| Build Command | `npm install` |
-| Start Command | `npm start` |
-| Health Check Path | `/health` |
-
-Express 서버는 `src/server.js`에서 `process.env.PORT || 3000`을 사용합니다. Render는 배포 환경에서 `PORT` 환경변수를 자동으로 제공하므로 코드에 포트 번호를 고정하지 않습니다.
-
-백엔드 배포 후 API는 다음과 같은 주소로 확인할 수 있습니다.
-
-```text
-https://your-backend-service.onrender.com/health
-https://your-backend-service.onrender.com/cars
-https://your-backend-service.onrender.com/cars/1
-```
-
-자동차 추가, 수정, 삭제 API 경로도 로컬과 동일하게 `/cars`와 `/cars/:id`를 사용합니다.
-
-### Frontend: Render Static Site
-
-Render Dashboard에서 `New +` -> `Static Site`를 선택하고 같은 GitHub 저장소를 연결합니다.
-
-| 항목 | 설정값 |
-| --- | --- |
-| Branch | `main` |
-| Root Directory | `frontend` |
-| Build Command | `npm install && npm run build` |
-| Publish Directory | `dist` |
-
-Vite 개발 서버에서는 `frontend/vite.config.js`의 프록시가 React의 `/api/cars` 요청을 Express의 `/cars`로 전달합니다. 정적 배포 환경에서는 Vite 개발 프록시가 동작하지 않으므로, 프론트엔드 호스팅 서비스에서 `/api/*` 요청을 백엔드 Render Web Service로 rewrite하도록 설정합니다.
-
-Render Static Site를 사용하는 경우 Redirects/Rewrites 설정에서 다음 규칙을 추가합니다.
-
-| Source | Destination | Action |
-| --- | --- | --- |
-| `/api/*` | `https://your-backend-service.onrender.com/*` | Rewrite |
-
-이렇게 하면 React 코드는 계속 `/api/cars`로 요청하고, 정적 사이트 호스팅 계층이 백엔드의 `/cars`로 전달합니다.
-
-### GitHub Actions CI
-
-`.github/workflows/ci.yml`은 `main` 브랜치에 push될 때 실행됩니다.
-
-CI에서 확인하는 내용은 다음과 같습니다.
-
-1. 루트 백엔드 의존성 설치: `npm install`
-2. Express 서버 실행 후 `/health` 응답 확인
-3. 프론트엔드 의존성 설치: `cd frontend && npm install`
-4. 프론트엔드 정적 빌드 확인: `npm run build`
-
-Render 자동 배포는 별도 Secret Key를 코드나 GitHub Actions에 넣지 않고 Render의 GitHub 연동과 Auto Deploy를 사용합니다. 즉, GitHub Actions는 배포 전 기본 검증 역할을 하고, 실제 배포 트리거는 Render가 GitHub 저장소의 `main` 브랜치 변경을 감지해서 처리합니다.
-
-## 로컬 배포 검증 명령어
-
-배포 전 로컬에서 다음 명령어로 같은 흐름을 확인할 수 있습니다.
-
-```bash
-npm install
-npm start
-```
-
-새 터미널에서 백엔드 상태를 확인합니다.
-
-```bash
-curl http://localhost:3000/health
-curl http://localhost:3000/cars
-```
-
-프론트엔드 빌드는 다음 명령어로 확인합니다.
+정적 배포용 파일은 `frontend` 폴더에서 빌드합니다.
 
 ```bash
 cd frontend
-npm install
 npm run build
 ```
 
-## Codespaces에서 다음 실행 순서
+빌드 결과물은 `frontend/dist` 폴더에 생성됩니다.
 
-1. Codespaces에서 `Rebuild Container`를 실행합니다.
-2. Rebuild가 끝난 뒤 터미널에서 `node -v`와 `npm -v`를 확인합니다.
-3. 루트 폴더에서 `npm install`을 실행합니다. Dev Container가 이미 설치했다면 생략할 수 있습니다.
-4. 루트 폴더에서 `npm start`로 Express 서버를 실행합니다.
-5. 새 터미널에서 `cd frontend`로 이동합니다.
-6. `npm install`을 실행합니다. Dev Container가 이미 설치했다면 생략할 수 있습니다.
-7. `npm run dev`로 Vite React 개발 서버를 실행합니다.
-8. 브라우저에서 `http://localhost:5173`에 접속합니다.
+## 배포 구조
+
+이 프로젝트는 Render에서 백엔드와 프론트엔드를 분리해서 배포했습니다.
+
+| 영역 | Render 서비스 | 설명 |
+| --- | --- | --- |
+| Backend | Web Service | Express REST API 서버를 실행합니다. |
+| Frontend | Static Site | Vite로 빌드한 정적 파일을 배포합니다. |
+
+백엔드는 Render Web Service에서 `npm start`로 실행됩니다. Express 서버는 `process.env.PORT || 3000`을 사용하므로 Render가 제공하는 `PORT` 환경변수에 맞춰 실행됩니다.
+
+프론트엔드는 Render Static Site로 배포되며, 정적 배포 환경에서는 Vite 개발 프록시가 동작하지 않습니다. 따라서 Render Static Site의 Rewrite 설정을 통해 `/api/*` 요청을 백엔드 API로 연결합니다.
+
+| 항목 | 설정값 |
+| --- | --- |
+| Source Path | `/api/*` |
+| Destination Path | `https://car-crud-api-ue60.onrender.com/*` |
+| Action | `Rewrite` |
+
+이 설정을 적용하면 프론트엔드에서 보내는 `/api/cars` 요청이 백엔드의 `/cars` API로 전달됩니다.
+
+```text
+https://car-crud-frontend.onrender.com/api/cars
+  -> Render Static Site Rewrite (/api/*)
+  -> https://car-crud-api-ue60.onrender.com/cars
+```
+
+## GitHub Actions CI
+
+`.github/workflows/ci.yml`은 `main` 브랜치에 push되면 자동으로 실행됩니다.
+
+CI에서 확인하는 내용은 다음과 같습니다.
+
+1. 백엔드 의존성 설치 확인
+2. Express 서버 실행 후 `/health` 응답 확인
+3. 프론트엔드 의존성 설치 확인
+4. 프론트엔드 `npm run build` 실행 확인
+
+GitHub Actions 결과에 초록 체크가 표시되면 기본 설치와 빌드가 정상적으로 완료된 것입니다.
+
+## 향후 개선사항
+
+- 실제 데이터베이스 연동
+- 로그인 기능 추가
+- 자동차 검색/필터 기능 추가
+- 목록 페이지네이션 적용
+- 배포 환경변수 관리 개선
