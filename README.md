@@ -4,7 +4,7 @@
 
 이 프로젝트는 Codespaces + Codex 환경에서 Express 백엔드와 Vite 기반 React 프론트엔드를 함께 실습하기 위한 자동차 CRUD 예제입니다.
 
-백엔드는 데이터베이스를 사용하지 않고 메모리 배열 `carList`에 자동차 데이터를 저장합니다. 프론트엔드는 Vite 프록시를 통해 Express API에 요청하고, 자동차 목록 조회, 추가, 수정, 삭제 기능을 화면에서 실행합니다.
+백엔드는 데이터베이스를 사용하지 않고 메모리 배열 `carList`에 자동차 데이터를 저장합니다. 프론트엔드는 Vite 프록시를 통해 Express API에 요청하고, 자동차 목록 조회, 추가, 수정, 삭제 기능을 화면에서 실행합니다. React 화면 스타일은 Tailwind CSS를 적용해 관리자 화면 형태로 구성했습니다.
 
 ## Codespaces 실행 환경
 
@@ -34,7 +34,7 @@ Dev Container 설정을 처음 추가했거나 수정한 뒤에는 Codespaces에
     ├── vite.config.js        # /api 요청을 Express 서버로 전달하는 프록시 설정
     └── src
         ├── App.jsx           # 자동차 CRUD 화면
-        ├── App.css           # 자동차 CRUD 화면 스타일
+        ├── App.css           # Tailwind CSS import 및 기본 스타일
         └── main.jsx
 ```
 
@@ -57,6 +57,14 @@ npm start
 PORT=4000 npm start
 ```
 
+## Tailwind CSS 적용 내용
+
+프론트엔드에는 Tailwind CSS가 적용되어 있습니다.
+
+- `frontend/package.json`에 `tailwindcss`와 `@tailwindcss/vite` 의존성을 추가했습니다.
+- `frontend/vite.config.js`에서 Tailwind Vite 플러그인을 React 플러그인과 함께 사용합니다.
+- `frontend/src/App.css`는 `@import "tailwindcss";`를 중심으로 정리하고, 화면 스타일은 `frontend/src/App.jsx`의 Tailwind 유틸리티 클래스로 적용합니다.
+
 ## 프론트엔드 실행 방법
 
 새 터미널을 열고 `frontend` 폴더에서 의존성을 설치한 뒤 Vite 개발 서버를 실행합니다.
@@ -70,6 +78,25 @@ npm run dev
 ```
 
 Vite 개발 서버는 기본적으로 `http://localhost:5173`에서 실행됩니다.
+
+## 백엔드와 프론트엔드 동시 실행 방법
+
+터미널 2개를 열어 백엔드와 프론트엔드를 동시에 실행합니다.
+
+첫 번째 터미널에서는 루트 폴더에서 Express 서버를 실행합니다.
+
+```bash
+npm start
+```
+
+두 번째 터미널에서는 `frontend` 폴더에서 Vite 개발 서버를 실행합니다.
+
+```bash
+cd frontend
+npm run dev
+```
+
+브라우저에서는 `http://localhost:5173`으로 접속합니다. React는 계속 `/api/cars`로 요청하고, Vite 프록시가 Express 서버의 `/cars`로 전달합니다.
 
 ## API 목록
 
@@ -150,6 +177,16 @@ React fetch('/api/cars')
 ```
 
 예를 들어 React에서 `DELETE /api/cars/1`을 호출하면 Express 서버에는 `DELETE /cars/1`로 전달됩니다.
+
+## 화면 구성 설명
+
+React 화면은 Tailwind CSS로 다음과 같이 구성되어 있습니다.
+
+- 상단 헤더: 자동차 관리 화면의 제목과 설명을 표시합니다.
+- 자동차 입력 카드: 이름, 제조사, 연식, 가격을 입력하고 자동차를 추가하거나 수정합니다.
+- 수정 모드 표시: 목록의 수정 버튼을 누르면 폼 제목과 배지가 수정 모드로 바뀝니다.
+- 자동차 목록 테이블: 자동차 데이터를 표 형태로 보여주며 수정 버튼과 삭제 버튼을 구분된 색상으로 제공합니다.
+- 반응형 처리: 작은 화면에서는 입력 폼이 세로로 배치되고, 테이블은 가로 스크롤로 확인할 수 있습니다.
 
 ## CRUD 사용 흐름
 
