@@ -26,6 +26,9 @@ Dev Container 설정을 처음 추가했거나 수정한 뒤에는 Codespaces에
 ├── package.json              # Express 서버 의존성 및 실행 스크립트
 ├── package-lock.json
 ├── README.md
+├── .github
+│   └── workflows
+│       └── ci.yml             # GitHub Actions CI 워크플로우
 ├── src
 │   └── server.js             # Express 서버와 자동차 CRUD REST API
 └── frontend
@@ -210,6 +213,97 @@ curl http://localhost:3000/cars
 프론트엔드는 브라우저에서 `http://localhost:5173`에 접속한 뒤 추가, 수정, 삭제 버튼을 눌러 동작을 확인합니다.
 
 메모리 배열을 사용하므로 Express 서버를 재시작하면 자동차 데이터는 초기값으로 돌아갑니다.
+
+## Render 배포 준비
+
+이 프로젝트는 백엔드와 프론트엔드를 분리해서 배포하는 구조로 준비합니다.
+
+- Backend: Render Web Service에 Express REST API를 배포합니다.
+- Frontend: Render Static Site로 Vite 빌드 결과물을 배포할 수 있으며, 같은 구조로 Firebase Hosting 또는 Vercel에도 정적 배포할 수 있습니다.
+- 실제 자동 배포는 GitHub Actions에서 Render API Key를 직접 사용하지 않고, Render의 GitHub 저장소 연동과 Auto Deploy 기능을 사용합니다.
+
+### Backend: Render Web Service
+
+Render Dashboard에서 `New +` -> `Web Service`를 선택하고 GitHub 저장소를 연결합니다.
+
+| 항목 | 설정값 |
+| --- | --- |
+| Runtime | Node |
+| Branch | `main` |
+| Root Directory | 비워둠 또는 `.` |
+| Build Command | `npm install` |
+| Start Command | `npm start` |
+| Health Check Path | `/health` |
+
+Express 서버는 `src/server.js`에서 `process.env.PORT || 3000`을 사용합니다. Render는 배포 환경에서 `PORT` 환경변수를 자동으로 제공하므로 코드에 포트 번호를 고정하지 않습니다.
+
+백엔드 배포 후 API는 다음과 같은 주소로 확인할 수 있습니다.
+
+```text
+https://your-backend-service.onrender.com/health
+https://your-backend-service.onrender.com/cars
+https://your-backend-service.onrender.com/cars/1
+```
+
+자동차 추가, 수정, 삭제 API 경로도 로컬과 동일하게 `/cars`와 `/cars/:id`를 사용합니다.
+
+### Frontend: Render Static Site
+
+Render Dashboard에서 `New +` -> `Static Site`를 선택하고 같은 GitHub 저장소를 연결합니다.
+
+| 항목 | 설정값 |
+| --- | --- |
+| Branch | `main` |
+| Root Directory | `frontend` |
+| Build Command | `npm install && npm run build` |
+| Publish Directory | `dist` |
+
+Vite 개발 서버에서는 `frontend/vite.config.js`의 프록시가 React의 `/api/cars` 요청을 Express의 `/cars`로 전달합니다. 정적 배포 환경에서는 Vite 개발 프록시가 동작하지 않으므로, 프론트엔드 호스팅 서비스에서 `/api/*` 요청을 백엔드 Render Web Service로 rewrite하도록 설정합니다.
+
+Render Static Site를 사용하는 경우 Redirects/Rewrites 설정에서 다음 규칙을 추가합니다.
+
+| Source | Destination | Action |
+| --- | --- | --- |
+| `/api/*` | `https://your-backend-service.onrender.com/*` | Rewrite |
+
+이렇게 하면 React 코드는 계속 `/api/cars`로 요청하고, 정적 사이트 호스팅 계층이 백엔드의 `/cars`로 전달합니다.
+
+### GitHub Actions CI
+
+`.github/workflows/ci.yml`은 `main` 브랜치에 push될 때 실행됩니다.
+
+CI에서 확인하는 내용은 다음과 같습니다.
+
+1. 루트 백엔드 의존성 설치: `npm install`
+2. Express 서버 실행 후 `/health` 응답 확인
+3. 프론트엔드 의존성 설치: `cd frontend && npm install`
+4. 프론트엔드 정적 빌드 확인: `npm run build`
+
+Render 자동 배포는 별도 Secret Key를 코드나 GitHub Actions에 넣지 않고 Render의 GitHub 연동과 Auto Deploy를 사용합니다. 즉, GitHub Actions는 배포 전 기본 검증 역할을 하고, 실제 배포 트리거는 Render가 GitHub 저장소의 `main` 브랜치 변경을 감지해서 처리합니다.
+
+## 로컬 배포 검증 명령어
+
+배포 전 로컬에서 다음 명령어로 같은 흐름을 확인할 수 있습니다.
+
+```bash
+npm install
+npm start
+```
+
+새 터미널에서 백엔드 상태를 확인합니다.
+
+```bash
+curl http://localhost:3000/health
+curl http://localhost:3000/cars
+```
+
+프론트엔드 빌드는 다음 명령어로 확인합니다.
+
+```bash
+cd frontend
+npm install
+npm run build
+```
 
 ## Codespaces에서 다음 실행 순서
 
