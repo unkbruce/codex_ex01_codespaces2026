@@ -185,6 +185,14 @@ CI에서 확인하는 내용은 다음과 같습니다.
 
 GitHub Actions 결과에 초록 체크가 표시되면 기본 설치와 빌드가 정상적으로 완료된 것입니다.
 
+## 학습 포인트
+
+- Express에서 REST API를 구성하는 방법
+- React에서 fetch API로 백엔드와 통신하는 방법
+- Vite proxy와 Render Rewrite 설정의 차이
+- GitHub Actions를 통한 기본 CI 구성
+- Render를 이용한 백엔드/프론트엔드 분리 배포
+
 ## 향후 개선사항
 
 - 실제 데이터베이스 연동
